@@ -40,4 +40,19 @@ public class OrderLab {
     public List<Order> getOrders() {
         return mOrders;
     }
+
+    public Order addOrder() {
+        Order order = new Order();
+        mOrders.add(order);
+        return order;
+    }
+
+    public void deleteOrder(UUID id) {
+        for (Order order : mOrders) {
+            if (id.equals(order.getId())) {
+                mOrders.remove(order);
+                return;
+            }
+        }
+    }
 }

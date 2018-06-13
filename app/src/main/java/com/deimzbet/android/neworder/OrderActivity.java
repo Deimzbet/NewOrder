@@ -36,17 +36,6 @@ public class OrderActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_order, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
     public static Intent createIntent(Context context, UUID id) {
         Intent intent = new Intent(context, OrderActivity.class);
         intent.putExtra(EXTRA_ID, id);
