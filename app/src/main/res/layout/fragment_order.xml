@@ -12,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/title"
         app:layout_constraintBottom_toBottomOf="@+id/titleEditText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/photoImageView"
         app:layout_constraintTop_toTopOf="@+id/titleEditText" />
 
     <TextView
@@ -25,12 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/type"
         app:layout_constraintBottom_toBottomOf="@+id/typeEditText"
         app:layout_constraintEnd_toEndOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/typeEditText" />
 
     <EditText
@@ -84,7 +83,7 @@
         android:text="@string/button_date"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/typeEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/cameraImageButton" />
 
     <CheckBox
         android:id="@+id/finishedCheckBox"
@@ -98,5 +97,29 @@
         app:layout_constraintEnd_toEndOf="@+id/dateButton"
         app:layout_constraintStart_toStartOf="@+id/dateButton"
         app:layout_constraintTop_toBottomOf="@+id/dateButton" />
+
+    <ImageView
+        android:id="@+id/photoImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/titleEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleEditText"
+        app:srcCompat="@android:drawable/btn_dialog" />
+
+    <ImageButton
+        android:id="@+id/cameraImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+        app:layout_constraintStart_toStartOf="@+id/photoImageView"
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView"
+        app:srcCompat="@drawable/ic_camera" />
 
 </android.support.constraint.ConstraintLayout>

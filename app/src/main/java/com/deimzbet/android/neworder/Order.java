@@ -13,7 +13,11 @@ public class Order implements Serializable{
     private boolean isFinished;
 
     public Order() {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Order(UUID id) {
+        mId = id;
         mDate = new Date();
     }
 

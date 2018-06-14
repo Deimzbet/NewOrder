@@ -50,12 +50,12 @@ public class ListActivityFragment extends Fragment {
     }
 
     private void updateUI() {
-        Log.d("TAGG", "updateUI");
+        List<Order> orders = OrderLab.get(getActivity()).getOrders();
         if (mAdapter == null) {
-            List<Order> orders = OrderLab.get(getActivity()).getOrders();
             mAdapter = new OrderAdapter(orders);
             mRecyclerView.setAdapter(mAdapter);
         } else {
+            mAdapter.setCrimes(orders);
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -102,6 +102,10 @@ public class ListActivityFragment extends Fragment {
         public int getItemCount() {
             Log.d("TAGG", "getItemCount");
             return mOrders.size();
+        }
+
+        public void setCrimes(List<Order> orders) {
+            mOrders = orders;
         }
     }
 

@@ -2,11 +2,16 @@ package com.deimzbet.android.neworder;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -20,9 +25,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class OrderActivityFragment extends Fragment {
@@ -30,8 +39,11 @@ public class OrderActivityFragment extends Fragment {
     private static final String ARG_ID = "id";
     private static final String DATE_DIALOG = "date_dialog";
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_PHOTO = 1;
 
     private TextView dateLabel;
+    private ImageView mPhotoImageView;
+    private ImageButton mCameraImageButton;
 
     private Order mOrder;
 
@@ -66,6 +78,7 @@ public class OrderActivityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
+
 
         EditText titleField = view.findViewById(R.id.titleEditText);
         EditText typeField = view.findViewById(R.id.typeEditText);
@@ -130,6 +143,9 @@ public class OrderActivityFragment extends Fragment {
                 mOrder.setFinished(isChecked);
             }
         });
+
+        mPhotoImageView = view.findViewById(R.id.photoImageView);
+        mCameraImageButton = view.findViewById(R.id.cameraImageButton);
 
         return view;
     }
