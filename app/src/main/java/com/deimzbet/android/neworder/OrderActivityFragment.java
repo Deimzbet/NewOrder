@@ -1,15 +1,19 @@
 package com.deimzbet.android.neworder;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,11 +22,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class OrderActivityFragment extends Fragment {
 
     private static final String ARG_ID = "id";
+    private static final String DATE_DIALOG = "date_dialog";
+    private static final int REQUEST_DATE = 0;
+
+    private TextView dateLabel;
 
     private Order mOrder;
 
@@ -43,6 +52,14 @@ public class OrderActivityFragment extends Fragment {
             UUID id = (UUID) args.getSerializable(ARG_ID);
             mOrder = OrderLab.get(getActivity()).getOrder(id);
         }
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        OrderLab.get(getActivity()).updateOrder(mOrder);
     }
 
     @Override
@@ -52,7 +69,7 @@ public class OrderActivityFragment extends Fragment {
 
         EditText titleField = view.findViewById(R.id.titleEditText);
         EditText typeField = view.findViewById(R.id.typeEditText);
-        TextView dateLabel = view.findViewById(R.id.dateTextView);
+        dateLabel = view.findViewById(R.id.dateTextView);
         Button dateButton = view.findViewById(R.id.dateButton);
         CheckBox finishedCheckBox = view.findViewById(R.id.finishedCheckBox);
 
@@ -94,7 +111,17 @@ public class OrderActivityFragment extends Fragment {
 
         String dateFormat = DateFormat.format("dd.MMMM.yyyy", mOrder.getDate()).toString();
         dateLabel.setText(dateFormat);
-        dateButton.setEnabled(false);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    OrderDateDialog dialog = OrderDateDialog.newInstance(mOrder.getDate());
+                    dialog.setTargetFragment(OrderActivityFragment.this, REQUEST_DATE);
+                    dialog.show(fm, DATE_DIALOG);
+                }
+            }
+        });
 
         finishedCheckBox.setChecked(mOrder.isFinished());
         finishedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -104,8 +131,37 @@ public class OrderActivityFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_order, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            OrderLab.get(getActivity()).deleteOrder(mOrder.getId());
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(OrderDateDialog.EXTRA_DATE);
+            mOrder.setDate(date);
+            String dateFormat = DateFormat.format("dd.MMMM.yyyy", date).toString();
+            dateLabel.setText(dateFormat);
+        }
+    }
 }

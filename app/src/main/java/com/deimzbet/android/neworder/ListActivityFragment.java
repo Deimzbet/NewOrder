@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,13 +62,14 @@ public class ListActivityFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Order order = OrderLab.get(getActivity()).addOrder();
+        Order order = new Order();
+        OrderLab.get(getActivity()).addOrder(order);
         Intent intent = OrderActivity.createIntent(getActivity(), order.getId());
         startActivity(intent);
         return true;
@@ -107,22 +109,25 @@ public class ListActivityFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private ImageView mFinishedImageView;
 
         private Order mOrder;
 
         public OrderHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            mTitleTextView = itemView.findViewById(R.id.itemTitleTextView);
+            mDateTextView = itemView.findViewById(R.id.itemDateTextView);
+            mFinishedImageView = itemView.findViewById(R.id.finishedImageView);
         }
 
         public void bind(Order order) {
             mOrder = order;
-            mTitleTextView = itemView.findViewById(R.id.itemTitleTextView);
-            mDateTextView = itemView.findViewById(R.id.itemDateTextView);
 
             mTitleTextView.setText(mOrder.getTitle());
             String dateFormat = DateFormat.format("dd.MMMM.yyyy", mOrder.getDate()).toString();
             mDateTextView.setText(dateFormat);
+            mFinishedImageView.setVisibility(mOrder.isFinished() ? View.VISIBLE : View.GONE);
         }
 
         @Override

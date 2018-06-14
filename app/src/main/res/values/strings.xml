@@ -10,4 +10,6 @@
     <string name="title_activity_order_list">Orders List</string>
     <string name="title_activity_list">Order List</string>
     <string name="new_order">New Order</string>
+    <string name="finished_description">finished</string>
+    <string name="date_dialog">Order Date</string>
 </resources>
